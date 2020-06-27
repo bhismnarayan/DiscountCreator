@@ -1,3 +1,7 @@
+#this dict contain customer type and and discount for different ranges
+#if new customer type can be added as dictionary key and and different ranges cound be added.
+#In order to make this make this program more modular we can read these values from json file
+#wherein customer type and discount
 
 discountRegular={'Regular':[
                    {'Lower':0,'Upper':5000,'discount':0},
@@ -12,27 +16,29 @@ discountRegular={'Regular':[
                 }
 
 
-def CustomerDiscount(currentAmount,customerType):
-    Totaldiscount=0
-    for i in discountRegular[customerType]:
-        if currentAmount>i['Upper']:
-            discount=(i['Upper']-i['Lower'])*i['discount']            
-            print('discount {0} ',discount)
-        else:
-            discount=(currentAmount-i['Lower'])*i['discount']
-            print('discount',discount)
 
-        Totaldiscount+=discount        
-    return Totaldiscount    
+def CalculateAmountAfterCustomerDiscount(customerType,currentAmount):
+# This function would calculate discount based on customer type and amount
 
-
-currentCustomerType='Premium'#input('Enter Customer type')
-customerPurchaseAmount=20000 #int(input('Enter Customer purchase amount'))
-
-currentAmount=customerPurchaseAmount
-customerdiscount=CustomerDiscount(currentAmount,currentCustomerType)
+    try:
+        Totaldiscount=0
+        for i in discountRegular[customerType]:
+            if currentAmount>i['Upper']:
+                discount=(i['Upper']-i['Lower'])*i['discount']            
+            else:
+                discount=(currentAmount-i['Lower'])*i['discount']
+            Totaldiscount+=discount        
+        return currentAmount-Totaldiscount
     
-print('Total Amount to pay{0}',customerPurchaseAmount-customerdiscount)            
+    except Exception as e:
+        return e
+    
 
+
+
+if __name__ == "__main__":
+    currentCustomerType='Regular'#''input('Enter Customer type')
+    customerPurchaseAmount=15000 #int(input('Enter Customer purchase amount'))
+    print('Total Amount to pay{0}',CalculateAmountAfterCustomerDiscount(currentCustomerType,customerPurchaseAmount))            
 
 
